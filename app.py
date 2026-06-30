@@ -177,7 +177,7 @@ def cart_api():
     if "cart" not in session:
         session["cart"] = []
     cart = session["cart"]
-    data = request.get_json() or {}
+    data = request.get_json(silent=True) or {}
 
     if request.method == "GET":
         return jsonify(cart)
