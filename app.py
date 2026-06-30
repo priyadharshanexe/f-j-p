@@ -170,7 +170,7 @@ def product_detail(product_id):
     if not product:
         return "Product not found", 404
     product_reviews = [r for r in REVIEWS if r["productId"] == product_id]
-    return render_template_string(PRODUCT_DETAIL_TEMPLATE, product=product, reviews=product_reviews, user=USERS["u1"])
+    return render_template_string(PRODUCT_DETAIL_TEMPLATE,product=product,reviews=product_reviews,user=USERS["u1"],USERS=USERS)
 
 @app.route('/api/cart', methods=["GET", "POST", "PUT", "DELETE"])
 def cart_api():
