@@ -1,0 +1,60 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/priyadharshanexe/f-j-p.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh '''
+                python3 -m pip install --upgrade pip
+                pip3 install Flask pytest
+                '''
+            }
+        }
+
+        stage('Run Unit Tests') {
+            steps {
+                sh '''
+                python3 -m unittest -v test_app.py
+                '''
+            }
+        }
+
+        stage('Start Flask Application') {
+            steps {
+                timeout(time: 5000, unit: 'SECONDS') {
+                    sh 'python3 app.py'
+                }
+            }
+        }
+
+        stage('Verify Application') {
+            steps {
+                sh '''
+                curl http://127.0.0.1:5000
+                '''
+            }
+        }
+    }
+
+     post {
+        success {
+            echo 'All tests passed. Application started successfully!'
+        }
+
+        failure {
+            echo 'Tests failed. Deployment aborted.'
+        }
+
+        aborted {
+            echo 'Application was stopped after 5000 seconds.'
+        }
+    }
+}
