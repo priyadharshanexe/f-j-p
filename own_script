@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+    stages {
+        
+        stage ('fench') {
+            steps{
+                git( 
+                    branch: 'main',
+                    url:'https://github.com/priyadharshanexe/f-j-p.git'
+                )
+            }
+        }
+        stage ('test') {
+            steps{
+                bat 'python -m pytest'
+            }
+        }
+        stage ('run') {
+            steps{
+                bat 'python app.py'
+            }
+        }
+        
+    }
+}
